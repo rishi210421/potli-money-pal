@@ -100,7 +100,7 @@ const chartData =
   
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/forecast/${category}`
+        `https://potli-money-pal-production.up.railway.app/forecast/${category}`
       );
   
       const data = await response.json();

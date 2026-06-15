@@ -50,7 +50,7 @@ if (profile.data?.full_name) {
 }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/chat-history/${user.id}`
+        `https://potli-money-pal-production.up.railway.app/chat-history/${user.id}`
       );
   
       const data = await response.json();
@@ -104,7 +104,7 @@ if (profile.data?.full_name) {
       }
   
       const response = await fetch(
-        "http://127.0.0.1:8000/chat",
+        "https://potli-money-pal-production.up.railway.app/chat",
         {
           method: "POST",
           headers: {
