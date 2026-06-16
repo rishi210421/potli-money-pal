@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from supabase import create_client
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-import google.generativeai as genai
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 import os
+import requests
 
 from pathlib import Path
 
@@ -22,7 +22,7 @@ SUPABASE_SERVICE_ROLE_KEY = os.getenv(
     "SUPABASE_SERVICE_ROLE_KEY"
 )
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 # ==================================================
 # SUPABASE
 # ==================================================
@@ -32,13 +32,6 @@ supabase = create_client(
     SUPABASE_SERVICE_ROLE_KEY
 )
 
-genai.configure(
-    api_key=GEMINI_API_KEY
-)
-
-model = genai.GenerativeModel(
-    "gemini-2.5-flash"
-)
 
 # CHAT REQUEST
 class ChatRequest(BaseModel):
@@ -60,6 +53,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:8080",
         "http://127.0.0.1:8080",
+        "https://rishi210421-potli-money-pal.rishisenani009.workers.dev"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -69,6 +63,35 @@ app.add_middleware(
 # ==================================================
 # ROOT
 # ==================================================
+
+def ask_openrouter(prompt: str):
+
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "deepseek/deepseek-chat-v3-0324:free",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+        },
+        timeout=60,
+    )
+
+    data = response.json()
+
+    print(data)
+
+    if "choices" not in data:
+        raise Exception(str(data))
+
+    return data["choices"][0]["message"]["content"]
 
 @app.get("/")
 def root():
@@ -261,12 +284,12 @@ def forecast_by_category(category_name: str):
 @app.post("/test-ai")
 def test_ai(request: ChatRequest):
 
-    response = model.generate_content(
+    reply = ask_openrouter(
         request.message
     )
 
     return {
-        "reply": response.text
+    "reply": reply
     }
 
 @app.post("/chat")
@@ -293,7 +316,7 @@ def chat(request: ChatRequest):
      "user_id": profile["id"],
      "role": "user",
      "message": request.message,
-     "model": "gemini-2.5-flash"
+     "model": "deepseek-chat-v3"
     }).execute()
 
     history = (
@@ -420,17 +443,17 @@ def chat(request: ChatRequest):
     Keep answers concise.
     """
     print(category_text)
-    response = model.generate_content(prompt)
+    reply = ask_openrouter(prompt)
 
     supabase.table("ai_chats").insert({
     "user_id": profile["id"],
     "role": "assistant",
-    "message": response.text,
-    "model": "gemini-2.5-flash"
+    "message": reply,
+    "model": "deepseek-chat-v3"
     }).execute()
 
     return {
-        "reply": response.text
+    "reply": reply
     }
 
 @app.get("/chat-history/{auth_user_id}")
