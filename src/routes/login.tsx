@@ -14,7 +14,7 @@ function Login() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "http://localhost:8080/profile-setup",
+        redirectTo: `${window.location.origin}/profile-setup`,
       },
     });
 

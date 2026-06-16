@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">potli</string>
+    <string name="title_activity_main">potli</string>
+    <string name="package_name">com.potli.app</string>
+    <string name="custom_url_scheme">com.potli.app</string>
+</resources>
