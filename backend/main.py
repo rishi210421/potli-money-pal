@@ -73,7 +73,7 @@ def ask_openrouter(prompt: str):
             "Content-Type": "application/json",
         },
         json={
-            "model": "deepseek/deepseek-chat-v3-0324:free",
+            "model": "nex-agi/nex-n2-pro:free",
             "messages": [
                 {
                     "role": "user",
