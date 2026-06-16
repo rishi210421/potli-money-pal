@@ -3,5 +3,5 @@ uvicorn
 python-dotenv
 supabase
 numpy
-pandas
 requests
+pandas
