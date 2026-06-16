@@ -1,8 +1,7 @@
 fastapi
 uvicorn
 python-dotenv
-supabase-py
-google-generativeai
-pandas
+supabase
 numpy
+pandas
 requests
