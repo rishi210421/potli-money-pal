@@ -9,7 +9,7 @@ export function Logo({
 }) {
   return (
     <img
-      src="/potli-logo.png"
+      src="/images/potli-logo.png"
       alt="Potli"
       width={size}
       height={size}
