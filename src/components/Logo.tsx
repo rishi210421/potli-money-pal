@@ -1,3 +1,5 @@
+import logo from "./potli-logo.png";
+
 export function Logo({
   size = 96,
   withWordmark = false,
@@ -9,7 +11,7 @@ export function Logo({
 }) {
   return (
     <img
-      src="/images/potli-logo.png"
+      src={logo}
       alt="Potli"
       width={size}
       height={size}
