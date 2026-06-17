@@ -17,7 +17,7 @@ function Welcome() {
         <Logo size={180} className="animate-float" />
 
         <div className="space-y-1">
-          <h1 className="text-3xl">Meet Potli</h1>
+        <h1 className="text-3xl">Meet MyPotli</h1>
 
           <p className="text-muted-foreground font-semibold">
             Your smart financial companion. Built for students. Trusted by parents.
